@@ -1,0 +1,6 @@
+--include lib
+--exclude "spec/*,gems/*"
+--aggregate coverage.data
+--sort coverage
+--text-summary
+--html

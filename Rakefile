@@ -11,3 +11,14 @@ Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_opts = ['--options', "\"#{ROOT_DIR}/spec/spec.opts\""]
   t.spec_files = FileList['spec/**/*_spec.rb']
 end
+
+namespace :spec do
+  desc 'Measures test coverage'
+  task :rcov do
+    system("rm", "-fr", "#{ROOT_DIR}/coverage", "#{ROOT_DIR}/coverage.data")
+    opts = File.open("#{ROOT_DIR}/spec/rcov.opts").readlines.map {|l| l.strip}
+    rcov = "rcov #{opts.join(' ')}"
+    system("#{rcov} #{ROOT_DIR}/spec/*_spec.rb")
+    system("open coverage/index.html") if PLATFORM['darwin']
+  end
+end

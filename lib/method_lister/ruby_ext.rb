@@ -1,6 +1,6 @@
 module Kernel
   def mls(displayer=MethodLister::ColorDisplay.new, finder=MethodLister::Finder.new)
-    displayer.display finder.find(self)
+    displayer.display finder.ls(self)
   end
   alias :ls :mls
 

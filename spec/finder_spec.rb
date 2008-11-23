@@ -9,7 +9,7 @@ describe MethodLister::Finder do
     all_find_scenarios.each do |scenario|
       it "finds method according to scenario #{scenario.name}" do
         scenario.setup!
-        @finder.find(scenario.object).should list_methods(scenario.expected)
+        @finder.ls(scenario.object).should list_methods(scenario.expected)
       end
     end
   end
@@ -21,7 +21,7 @@ describe MethodLister::Finder do
     
     describe "with results" do
       before do
-        stub(@finder).find(@object) do
+        stub(@finder).ls(@object) do
           [
             {:object => @object, :methods => ["foo", "foo2", "bar"].sort},
             {:object => Object, :methods => ["foo", "foo3", "qux"].sort},
@@ -66,7 +66,7 @@ describe MethodLister::Finder do
     
     describe "without results" do
       before do
-        stub(@finder).find(@object) { Array.new }
+        stub(@finder).ls(@object) { Array.new }
       end
 
       describe "#grep" do
@@ -84,7 +84,7 @@ describe MethodLister::Finder do
     
     describe "with results containing method_missing" do
       before do
-        stub(@finder).find(@object) do
+        stub(@finder).ls(@object) do
           [
             {:object => Array, :methods => ["sort1", "sort2"].sort},
             {:object => Object, :methods => ["sort3", "method_missing"].sort}

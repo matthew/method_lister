@@ -1,6 +1,6 @@
 module MethodLister
   class Finder
-    def find(object)
+    def ls(object)
       @findings, @seen = Array.new, Hash.new
       scan :eigenclass, object, :singleton_methods
       search_class_hierarchy(object.class)
@@ -8,7 +8,7 @@ module MethodLister
     end
 
     def grep(rx, object)
-      find(object).map do |record|
+      ls(object).map do |record|
         record[:methods] = record[:methods].select do |method| 
           (method =~ rx) || (method == "method_missing")
         end

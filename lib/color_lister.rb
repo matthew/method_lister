@@ -3,12 +3,11 @@ class ColorLister < SimpleLister
         @ansi = AnsiEscape.new
     end
 
-    def display(findings)
-        @ansi.clear_screen
-        super
-    end
-
     private
+    
+    def location_description(record)
+        color(super, :yellow_fg, :bold)
+    end
     
     def color_method_overloaded_from_kernel(source, method)
         if source != Kernel and Kernel.instance_methods.member? method
@@ -46,12 +45,12 @@ class ColorLister < SimpleLister
         self.methods.select {|method| method =~ /^color_method_/}
     end
 
-    def color(*args)
-        @ansi.color_string(*args)
+    def color(string, *colors)
+        output_is_to_tty? ? @ansi.color_string(string, *colors) : string
     end
-
-    def location_description(record)
-        color(super, :yellow_fg, :bold)
+    
+    def output_is_to_tty?
+      $stdout.tty?
     end
 end
 

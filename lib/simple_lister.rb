@@ -1,36 +1,36 @@
 class SimpleLister
-    def display(findings)
-        findings.reverse.each do |record|
-            write header(record)
-            write method_list(record)
-            write seperator(record)
-        end
-        nil
+  def display(findings)
+    findings.reverse.each do |record|
+      write header(record)
+      write method_list(record)
+      write seperator(record)
     end
-    
-    private
+    nil
+  end
 
-    def write(output)
-        puts output
-    end
+  private
 
-    def header(record)
-        description = location_description(record)
-        "========== #{description} =========="
-    end
+  def write(output)
+    puts output
+  end
 
-    def method_list(record)
-        record[:methods].join("  ")
-    end
+  def header(record)
+    description = location_description(record)
+    "========== #{description} =========="
+  end
 
-    def seperator(record)
-        ""
-    end
+  def method_list(record)
+    record[:methods].join("  ")
+  end
 
-    def location_description(record)
-        obj = record[:object]
-        return "Class #{obj}" if obj.kind_of? Class
-        return "Module #{obj}" if obj.kind_of? Module
-        return "self"
-    end
+  def seperator(record)
+    ""
+  end
+
+  def location_description(record)
+    obj = record[:object]
+    return "Class #{obj}" if obj.kind_of? Class
+    return "Module #{obj}" if obj.kind_of? Module
+    return "self"
+  end
 end

@@ -8,7 +8,6 @@ namespace :spec do
   end
 end
 
-desc 'Cleanup extraneous files'
 task :clean do
   system("rm", "-fr", "#{ROOT_DIR}/coverage", "#{ROOT_DIR}/coverage.data")
 end

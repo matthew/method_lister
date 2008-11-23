@@ -5,3 +5,6 @@ require 'rake'
 Dir["#{ROOT_DIR}/rake/*.rake"].each {|file| load file}
 
 task :default => :spec
+
+desc 'Cleanup extraneous files'
+task :clean

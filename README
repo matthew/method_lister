@@ -1,0 +1,39 @@
+Install
+=======
+
+Get the gem
+
+  sudo gem install method_lister
+
+Open up `~/.irbrc` and add these lines:
+
+    require 'rubygems'
+    require 'method_lister'
+    
+Usage
+=====
+
+Method Lister adds 3 methods to all objects in the system: `ls`, `grep`, and
+`which`. Since these names are sometimes already taken you can also use `mls`,
+`mgrep`, and `mwhich`.
+
+ls
+---
+
+The `ls` command will list all methods an object responds to, organized by
+the module or class which provides the implementation.  For example:
+
+    >> [].ls
+    ========== Module Enumerable ==========
+    all? any? collect detect each_with_index entries find find_all grep
+    include? inject map max member? min partition reject select sort sort_by
+    to_a zip
+
+    ========== Class Array ==========
+    & * + - << <=> == [] []= assoc at clear collect collect! compact compact!
+    concat delete delete_at delete_if each each_index empty? eql? fetch fill
+    first flatten flatten! frozen? hash include? index indexes indices insert
+    inspect join last length map map! nitems pack pop pretty_print
+    pretty_print_cycle push rassoc reject reject! replace reverse reverse!
+    reverse_each rindex select shift size slice slice! sort sort! to_a to_ary
+    to_s transpose uniq uniq! unshift values_at zip |

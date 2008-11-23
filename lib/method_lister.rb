@@ -1,6 +1,6 @@
 $: << File.expand_path(File.dirname(__FILE__))
 
-require 'method_finder'
-require 'simple_lister'
-require 'color_lister'
+require 'finder'
+require 'simple_display'
+require 'color_display'
 require 'ruby_ext'

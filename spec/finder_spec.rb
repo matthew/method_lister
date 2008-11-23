@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-describe MethodFinder do
+describe MethodLister::Finder do
   before do
-    @finder = MethodFinder.new
+    @finder = MethodLister::Finder.new
   end
   
   describe "#find" do

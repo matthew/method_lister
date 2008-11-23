@@ -19,8 +19,8 @@ module FindScenarioNameSpace
   end
   
   @expected = [
-    @object,  ["method_from_eigenclass"],
-    MyModule, ["method_from_module"],
-    Klass,    ["method_from_class"],
+    result(@object, :public => ["method_from_eigenclass"]),
+    result(MyModule, :public => ["method_from_module"]),
+    result(Klass, :public => ["method_from_class"]),
   ]
 end

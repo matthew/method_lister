@@ -13,7 +13,7 @@ module FindScenarioNameSpace
 
   @object = Klass.new
   @expected = [
-       Klass, ["method_in_class"],
-    MyModule, ["method_in_module"]
+       result(Klass, :public => ["method_in_class"]),
+    result(MyModule, :public => ["method_in_module"])
   ]
 end

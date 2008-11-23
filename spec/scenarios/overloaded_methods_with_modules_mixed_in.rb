@@ -12,15 +12,15 @@ module FindScenarioNameSpace
 
   @object = K5.new
   @expected = [
-    K5, ["method_k5"],
-    M5, ["method_m5"],
-    K4, ["method_k4"],
-    M4, ["method_m4"],
-    K3, ["method_k3"],
-    M3, ["method_m3"],
-    K2, ["method_k2"],
-    M2, ["method_m2"],
-    K1, ["method_k1"],
-    M1, ["method_m1"]
+    result(K5, :public => ["method_k5"]),
+    result(M5, :public => ["method_m5"]),
+    result(K4, :public => ["method_k4"]),
+    result(M4, :public => ["method_m4"]),
+    result(K3, :public => ["method_k3"]),
+    result(M3, :public => ["method_m3"]),
+    result(K2, :public => ["method_k2"]),
+    result(M2, :public => ["method_m2"]),
+    result(K1, :public => ["method_k1"]),
+    result(M1, :public => ["method_m1"]),
   ]
 end

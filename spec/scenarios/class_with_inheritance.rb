@@ -11,7 +11,7 @@ module FindScenarioNameSpace
   
   @object = Klass.new
   @expected = [
-       Klass,   ["method_from_class"],
-    SuperKlass, ["method_from_superclass"]
+       result(Klass, :public => ["method_from_class"]),
+    result(SuperKlass, :public => ["method_from_superclass"])
   ]
 end

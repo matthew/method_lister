@@ -9,7 +9,7 @@ module MethodListerMatchers
     end
   
     def matches?(target)
-      @target = convert_target_to_canonical_form(target)
+      @target = target.slice(0, @expected.length)  # Trim extras from Rspec, Ruby, etc.
       @target == @expected
     end
   
@@ -22,17 +22,6 @@ module MethodListerMatchers
     
     def negative_failure_message
       "Did not expect these findings: #{@expected.inspect}"
-    end
-    
-    private
-    
-    def convert_target_to_canonical_form(target)
-      new_target = Array.new
-      target.each do |finding|
-        new_target << finding.object
-        new_target << finding.methods(:all)
-      end
-      new_target.slice(0, @expected.length)
     end
   end
 end

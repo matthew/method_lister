@@ -1,11 +1,14 @@
 require 'rubygems' rescue nil
 require 'spec'
 
-ROOT_DIR = File.dirname(__FILE__)
-$: << File.expand_path("#{ROOT_DIR}/../lib")
+SPEC_DIR = File.dirname(__FILE__)
 
-require 'method_lister'
+require File.expand_path("#{SPEC_DIR}/../lib/method_lister")
+Dir["#{SPEC_DIR}/helpers/**/*.rb"].each do |file|
+  require file
+end
 
 Spec::Runner.configure do |config|
   config.mock_with :rr
+  config.include MethodListerMatchers
 end

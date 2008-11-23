@@ -1,6 +1,6 @@
 class MethodFinder
     def find(obj)
-        @findings, @seen = [], {}
+        @findings, @seen = Array.new, Hash.new
         scan :eigenclass, obj, :singleton_methods
         search_class_hierarchy(obj.class)
         @findings

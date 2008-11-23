@@ -2,22 +2,17 @@ module MethodLister
   class SimpleDisplay
     def display(findings)
       findings.reverse.each do |record|
-        write header(record)
-        write method_list(record)
-        write seperator(record)
+        puts header(record)
+        puts method_list(record)
+        puts seperator(record)
       end
       nil
     end
 
     private
 
-    def write(output)
-      puts output
-    end
-
     def header(record)
-      description = location_description(record)
-      "========== #{description} =========="
+      "========== #{location_description(record)} =========="
     end
 
     def method_list(record)

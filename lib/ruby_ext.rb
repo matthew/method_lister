@@ -1,9 +1,16 @@
 module Kernel
-    def ls(obj=self, displayer=ColorLister.new, finder=MethodFinder.new)
-        displayer.display( finder.find(obj) )
+    def mls(displayer=ColorLister.new, finder=MethodFinder.new)
+        displayer.display finder.find(self)
     end
+    alias :ls :mls
 
-    def grep(regex, obj=self, displayer=ColorLister.new, finder=MethodFinder.new)
-        displayer.display( finder.grep(regex, obj) )
+    def mgrep(regex, displayer=ColorLister.new, finder=MethodFinder.new)
+        displayer.display finder.grep(regex, self)
     end
+    alias :grep :mgrep
+    
+    def mwhich(method, displayer=ColorLister.new, finder=MethodFinder.new)
+      displayer.display finder.which(method, self)
+    end
+    alias :which :mwhich
 end

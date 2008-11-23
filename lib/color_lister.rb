@@ -9,8 +9,25 @@ class ColorLister < SimpleLister
     end
 
     private
-    include ColoringMethods
+    
+    def color_method_overloaded_from_kernel(source, method)
+        if source != Kernel and Kernel.instance_methods.member? method
+            color(method, :green_fg)
+        end
+    end
 
+    def color_method_missing(source, method)
+        color(method, :red_fg, :blink) if method == "method_missing"
+    end
+
+    def color_method_array_primative(source, method)
+        exempt_sources = [Kernel, Fixnum, Hash, String, Enumerable, Array]
+        unless exempt_sources.member? source
+            primatives = %w{[] []= each <<}
+            color(method, :magenta_fg) if primatives.member? method
+        end
+    end
+    
     def method_list(record)
         record[:methods].map do |method| 
             color_method(record[:object], method)
@@ -34,6 +51,32 @@ class ColorLister < SimpleLister
     end
 
     def location_description(record)
-        color(super, :yellow, :bold)
+        color(super, :yellow_fg, :bold)
+    end
+end
+
+class AnsiEscape
+    Colors = {
+        :none => 0, :black_fg => 30, :red_fg => 31, :green_fg => 32,
+        :yellow_fg => 33, :blue_fg => 34, :magenta_fg => 35, :cyan_fg => 36,
+        :white_fg => 37, :black_bg => 40, :red_bg => 41, :green_bg => 42,
+        :yellow_bg => 43, :blue_bg => 44, :magenta_bg => 45, :cyan_bg => 46,
+        :white_bg => 47, :bold => 1, :underline => 4, :blink => 5, 
+        :reverse => 7, :invisible => 8
+    }
+
+    def clear_screen
+        print "\e[2J\e[H"
+    end
+
+    def color_string(string, *colors)
+        color_code(*colors) + string + color_code(:none)
+    end
+
+    private
+
+    def color_code(*colors)
+        ansi_codes = colors.map {|c| Colors[c]}.compact.join(";")
+        "\e[#{ansi_codes}m" unless ansi_codes.empty?
     end
 end

@@ -4,4 +4,4 @@
 - Setup github project
 - Setup ruby forget project
 - Get private and public methods working
-- Use object to represent finder results, instead of hash
+x Use object to represent finder results, instead of hash

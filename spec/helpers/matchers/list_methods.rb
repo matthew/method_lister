@@ -29,8 +29,8 @@ module MethodListerMatchers
     def convert_target_to_canonical_form(target)
       new_target = Array.new
       target.each do |finding|
-        new_target << finding[:object]
-        new_target << finding[:methods]
+        new_target << finding.object
+        new_target << finding.methods(:all)
       end
       new_target.slice(0, @expected.length)
     end

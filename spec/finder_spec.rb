@@ -5,6 +5,10 @@ describe MethodLister::Finder do
     @finder = MethodLister::Finder.new
   end
   
+  def result(options)
+    MethodLister::FindResult.new(options)
+  end
+  
   describe "#find" do
     all_find_scenarios.each do |scenario|
       it "finds method according to scenario #{scenario.name}" do
@@ -23,9 +27,9 @@ describe MethodLister::Finder do
       before do
         stub(@finder).ls(@object) do
           [
-            {:object => @object, :methods => ["foo", "foo2", "bar"].sort},
-            {:object => Object, :methods => ["foo", "foo3", "qux"].sort},
-            {:object => Kernel, :methods => ["baz"].sort},
+            result(:object => @object, :public => ["bar", "foo", "foo2"]),
+            result(:object => Object, :public => ["foo", "foo3", "qux"]),
+            result(:object => Kernel, :public => ["baz"]),
           ]
         end
       end
@@ -33,32 +37,38 @@ describe MethodLister::Finder do
       describe "#grep" do
         it "narrows down the find results based on the given regex" do
           @finder.grep(/foo/, @object).should == [
-            {:object => @object, :methods => ["foo", "foo2"].sort},
-            {:object => Object, :methods => ["foo", "foo3"].sort}
+            result(:object => @object, :public => ["foo", "foo2"]),
+            result(:object => Object, :public => ["foo", "foo3"])
           ]
         end
       end
       
       describe "#which" do
+        it "attempts to regex escape the method name passed in" do
+          mock(Regexp).escape("foo").twice
+          @finder.which("foo", @object)
+          @finder.which(:foo, @object)
+        end
+        
         it "returns the classes and objects hold the method" do
           @finder.which("foo", @object).should == [
-            {:object => @object, :methods => ["foo"].sort},
-            {:object => Object, :methods => ["foo"].sort}
+            result(:object => @object, :public => ["foo"]),
+            result(:object => Object, :public => ["foo"])
           ]
           
           @finder.which("foo3", @object).should == [
-            {:object => Object, :methods => ["foo3"].sort}
+            result(:object => Object, :public => ["foo3"])
           ]
         end
         
         it "works correctly with symbols" do
           @finder.which(:foo, @object).should == [
-            {:object => @object, :methods => ["foo"].sort},
-            {:object => Object, :methods => ["foo"].sort}
+            result(:object => @object, :public => ["foo"]),
+            result(:object => Object, :public => ["foo"])
           ]
           
           @finder.which(:foo3, @object).should == [
-            {:object => Object, :methods => ["foo3"].sort}
+            result(:object => Object, :public => ["foo3"])
           ]
         end
       end
@@ -86,8 +96,8 @@ describe MethodLister::Finder do
       before do
         stub(@finder).ls(@object) do
           [
-            {:object => Array, :methods => ["sort1", "sort2"].sort},
-            {:object => Object, :methods => ["sort3", "method_missing"].sort}
+            result(:object => Array, :public => ["sort1", "sort2"]),
+            result(:object => Object, :public => ["method_missing", "sort3"])
           ]
         end
       end
@@ -95,7 +105,7 @@ describe MethodLister::Finder do
       describe "#grep" do
         it "returns method_missing its list of results if found" do
           @finder.grep(/I_MATCH_NOTHING/, @object).should == [
-            {:object => Object, :methods => ["method_missing"].sort},
+            result(:object => Object, :public => ["method_missing"]),
           ]
         end
       end
@@ -103,7 +113,7 @@ describe MethodLister::Finder do
       describe "#which" do
         it "returns method_missing its list of results if found" do
           @finder.which("I_MATCH_NOTHING", @object).should == [
-            {:object => Object, :methods => ["method_missing"].sort},
+            result(:object => Object, :public => ["method_missing"]),
           ]
         end
       end

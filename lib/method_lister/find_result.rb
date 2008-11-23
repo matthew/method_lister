@@ -25,11 +25,18 @@ module MethodLister
       !methods(visibility).empty?
     end
     
-    def remove_methods_matching!(rx)
+    def narrow_to_methods_matching!(rx)
       VISIBILITIES.each do |visibility|
-        @methods[visibility] = @methods[visibility].reject {|m| m =~ rx}
+        @methods[visibility] = @methods[visibility].select do |method| 
+          method =~ rx || method == "method_missing"
+        end
       end
-      true
+      self
+    end
+    
+    def ==(other)
+      object.eql?(other.object) && 
+      methods(:all).sort == other.methods(:all).sort
     end
   end
 end

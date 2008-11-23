@@ -116,12 +116,47 @@ describe MethodLister::FindResult do
     end
   end
   
-  describe "#remove_methods_matching!" do
-    it "removes all methods matching the given regex" do
+  describe "#narrow_to_methods_matching!" do
+    it "removes all methods not matching the given regex" do
       rx = /foo/
-      @mixed_result.methods(:all).select {|meth| meth =~ rx}.should_not be_empty 
-      @mixed_result.remove_methods_matching!(rx)
-      @mixed_result.methods(:all).select {|meth| meth =~ rx}.should be_empty 
+      @mixed_result.methods(:all).select {|meth| meth !~ rx}.should_not be_empty 
+      @mixed_result.narrow_to_methods_matching!(rx)
+      @mixed_result.methods(:all).select {|meth| meth !~ rx}.should be_empty 
+    end
+    
+    it "never removes method missing" do
+      @private << "method_missing"
+      rx = /foo/
+      @mixed_result.methods(:all).select {|meth| meth !~ rx}.should_not be_empty 
+      @mixed_result.narrow_to_methods_matching!(rx)
+      @mixed_result.methods(:all).select {|meth| meth !~ rx}.should be_include("method_missing")
+    end
+  end
+  
+  describe "#==" do
+    it "is equal if both have the same methods and object" do
+      @mixed_result.should == MethodLister::FindResult.new(
+        :object    => @mixed_result.object,
+        :public    => @mixed_result.methods(:public),
+        :protected => @mixed_result.methods(:protected),
+        :private   => @mixed_result.methods(:private)
+      )
+    end
+    
+    it "is not equal if both have same methods but different objects" do
+      @mixed_result.should_not == MethodLister::FindResult.new(
+        :object    => Object.new,
+        :public    => @mixed_result.methods(:public),
+        :protected => @mixed_result.methods(:protected),
+        :private   => @mixed_result.methods(:private)
+      )
+    end
+
+    it "is not equal if both have the same object but different methods" do
+      @mixed_result.should_not == MethodLister::FindResult.new(
+        :object    => @mixed_result.object,
+        :public    => ["something_else"]
+      )
     end
   end
 end

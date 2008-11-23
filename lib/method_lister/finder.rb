@@ -8,12 +8,9 @@ module MethodLister
     end
 
     def grep(rx, object)
-      ls(object).map do |record|
-        record[:methods] = record[:methods].select do |method| 
-          (method =~ rx) || (method == "method_missing")
-        end
-        record unless record[:methods].empty?
-      end.compact
+      ls(object).map do |result|
+        result.narrow_to_methods_matching!(rx)
+      end.select { |result| result.has_methods? }
     end
 
     def which(method, object)
@@ -39,9 +36,11 @@ module MethodLister
       end
     end
 
-    def record_methods(obj, lister_method)
-      methods = obj.send(lister_method, false).sort
-      @results << {:object => obj, :methods => methods} unless methods.empty?
+    def record_methods(object, lister_method)
+      methods = object.send(lister_method, false).sort
+      unless methods.empty?
+        @results << FindResult.new(:object => object, :public => methods)
+      end
     end
 
     def modules_for(obj_type, obj)

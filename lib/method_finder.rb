@@ -1,16 +1,24 @@
 class MethodFinder
-    def find(obj)
+    def find(object)
         @findings, @seen = Array.new, Hash.new
-        scan :eigenclass, obj, :singleton_methods
-        search_class_hierarchy(obj.class)
+        scan :eigenclass, object, :singleton_methods
+        search_class_hierarchy(object.class)
         @findings
     end
 
     def grep(rx, object)
         find(object).map do |record|
-            record[:methods] = record[:methods].select {|method| method =~ rx}
+            record[:methods] = record[:methods].select do |method| 
+              (method =~ rx) || (method == "method_missing")
+            end
             record unless record[:methods].empty?
         end.compact
+    end
+    
+    def which(method, object)
+      find(object).select do |record|
+        [method.to_s, "method_missing"].any? {|m| record[:methods].include?(m)}
+      end.map {|record| record[:object]}
     end
 
     private
@@ -38,8 +46,7 @@ class MethodFinder
     end
 
     def modules_for(obj_type, obj)
-        modules = []
-        case obj_type
+        modules = case obj_type
             when :module
                 modules = obj.included_modules
             when :class
@@ -50,8 +57,9 @@ class MethodFinder
                     modules = class << obj; included_modules; end
                     modules -= obj.class.included_modules
                 rescue TypeError # Not all types allow eigenclasses.
+                    nil
                 end
         end
-        modules
+        modules || []
     end
 end

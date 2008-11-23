@@ -5,7 +5,7 @@ describe MethodFinder do
     @finder = MethodFinder.new
   end
   
-  describe "find scenarios" do
+  describe "#find" do
     all_find_scenarios.each do |scenario|
       it "finds method according to scenario #{scenario.name}" do
         scenario.setup!
@@ -13,4 +13,86 @@ describe MethodFinder do
       end
     end
   end
+
+  describe "auxillary methods" do
+    before do
+      @object = Object.new
+    end
+    
+    describe "with results" do
+      before do
+        stub(@finder).find(@object) do
+          [
+            {:object => @object, :methods => ["foo", "foo2", "bar"].sort},
+            {:object => Object, :methods => ["foo", "foo3", "qux"].sort},
+            {:object => Kernel, :methods => ["baz"].sort},
+          ]
+        end
+      end
+
+      describe "#grep" do
+        it "narrows down the find results based on the given regex" do
+          @finder.grep(/foo/, @object).should == [
+            {:object => @object, :methods => ["foo", "foo2"].sort},
+            {:object => Object, :methods => ["foo", "foo3"].sort}
+          ]
+        end
+      end
+      
+      describe "#which" do
+        it "returns the classes and objects hold the method" do
+          @finder.which("foo", @object).should == [@object, Object]
+          @finder.which("foo3", @object).should == [Object]
+        end
+        
+        it "works correctly with symbols" do
+          @finder.which(:foo, @object).should == [@object, Object]
+          @finder.which(:foo3, @object).should == [Object]
+        end
+      end
+    end
+    
+    describe "without results" do
+      before do
+        stub(@finder).find(@object) { Array.new }
+      end
+
+      describe "#grep" do
+        it "returns the empty list if nothing can be found" do
+          @finder.grep(/I_MATCH_NOTHING/, @object).should == []
+        end
+      end
+      
+      describe "#which" do
+        it "returns the empty list if nothing can be found" do
+          @finder.which("I_MATCH_NOTHING", @object).should == []
+        end
+      end
+    end
+    
+    describe "with results containing method_missing" do
+      before do
+        stub(@finder).find(@object) do
+          [
+            {:object => Array, :methods => ["sort1", "sort2"].sort},
+            {:object => Object, :methods => ["sort3", "method_missing"].sort}
+          ]
+        end
+      end
+      
+      describe "#grep" do
+        it "returns method_missing its list of results if found" do
+          @finder.grep(/I_MATCH_NOTHING/, @object).should == [
+            {:object => Object, :methods => ["method_missing"].sort},
+          ]
+        end
+      end
+      
+      describe "#which" do
+        it "returns method_missing its list of results if found" do
+          @finder.which("I_MATCH_NOTHING", @object).should == [Object]
+        end
+      end
+    end    
+  end  
 end

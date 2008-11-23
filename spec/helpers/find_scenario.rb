@@ -12,7 +12,7 @@ class FindScenario
   
   def setup!
     FindScenarioNameSpace.reset!
-    require @filename
+    load @filename
     @object = FindScenarioNameSpace.object
     @expected = FindScenarioNameSpace.expected
   end

@@ -1,0 +1,7 @@
+- Get 100% rcov on all files
+- Add tests around the displayers
+- Add tests around the ruby extensions
+- Setup github project
+- Setup ruby forget project
+- Get private and public methods working
+- Use object to represent finder results, instead of hash

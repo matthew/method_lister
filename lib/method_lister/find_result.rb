@@ -1,8 +1,10 @@
 module MethodLister
   class FindResult
+    attr_reader :object
     VISIBILITIES = [:public, :protected, :private]
     
     def initialize(options={})
+      @object = options[:object] || raise(ArgumentError, "No :object given.")
       @methods = Hash.new
       VISIBILITIES.each do |visibility|
         @methods[visibility] = options[visibility] || Array.new

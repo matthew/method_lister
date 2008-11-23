@@ -1,10 +1,10 @@
 module MethodLister
   class Finder
     def ls(object)
-      @findings, @seen = Array.new, Hash.new
+      @results, @seen = Array.new, Hash.new
       scan :eigenclass, object, :singleton_methods
       search_class_hierarchy(object.class)
-      @findings
+      @results
     end
 
     def grep(rx, object)
@@ -41,7 +41,7 @@ module MethodLister
 
     def record_methods(obj, lister_method)
       methods = obj.send(lister_method, false).sort
-      @findings << {:object => obj, :methods => methods} unless methods.empty?
+      @results << {:object => obj, :methods => methods} unless methods.empty?
     end
 
     def modules_for(obj_type, obj)

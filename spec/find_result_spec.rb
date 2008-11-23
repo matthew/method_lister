@@ -7,14 +7,31 @@ describe MethodLister::FindResult do
     @protected = names.map {|m| "protected_#{m}"}
     @private   = names.map {|m| "private_#{m}"}
     @all       = @public + @protected + @private
-    
-    @empty_result   = MethodLister::FindResult.new
-    @only_public    = MethodLister::FindResult.new(:public => @public)
-    @only_protected = MethodLister::FindResult.new(:protected => @protected)
-    @only_private   = MethodLister::FindResult.new(:private => @private)
-    @mixed_result   = MethodLister::FindResult.new(:public => @public,
+
+    @object         = Object.new
+    @empty_result   = MethodLister::FindResult.new(:object => @object)
+    @only_public    = MethodLister::FindResult.new(:object => @object, 
+                                                   :public => @public)
+    @only_protected = MethodLister::FindResult.new(:object => @object, 
+                                                   :protected => @protected)
+    @only_private   = MethodLister::FindResult.new(:object => @object,
+                                                   :private => @private)
+    @mixed_result   = MethodLister::FindResult.new(:object => @object,
+                                                   :public => @public,
                                                    :protected => @protected,
                                                    :private => @private)
+  end
+  
+  describe "#object" do
+    it "requires at least an associated object" do
+      lambda do
+        MethodLister::FindResult.new(:public => @public)
+      end.should raise_error(ArgumentError)
+    end
+    
+    it "knows its associated object" do
+      @empty_result.object.should == @object
+    end
   end
   
   describe "#methods" do
@@ -52,7 +69,7 @@ describe MethodLister::FindResult do
     
     it "raises an exception if given an unknown visibility" do
       lambda do
-        MethodLister::FindResult.new.methods(:foobar) 
+        @empty_result.methods(:foobar) 
       end.should raise_error(ArgumentError)
     end
   end

@@ -106,3 +106,11 @@ MethodLister::Finder
 The method finding logic is encapsulated by `MethodLister::Finder`, which has
 three public methods: `ls`, `grep`, and `which`. However, instead of printing
 to $stdout the finder will return a data structure you can manipulate.
+
+License
+=======
+
+Copyright 2008, Matthew O'Connor All rights reserved.
+
+This program is free software; you can redistribute it and/or modify it under
+the same terms as Ruby 1.8.7 itself.

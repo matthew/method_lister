@@ -41,13 +41,25 @@ describe MethodLister::Finder do
       
       describe "#which" do
         it "returns the classes and objects hold the method" do
-          @finder.which("foo", @object).should == [@object, Object]
-          @finder.which("foo3", @object).should == [Object]
+          @finder.which("foo", @object).should == [
+            {:object => @object, :methods => ["foo"].sort},
+            {:object => Object, :methods => ["foo"].sort}
+          ]
+          
+          @finder.which("foo3", @object).should == [
+            {:object => Object, :methods => ["foo3"].sort}
+          ]
         end
         
         it "works correctly with symbols" do
-          @finder.which(:foo, @object).should == [@object, Object]
-          @finder.which(:foo3, @object).should == [Object]
+          @finder.which(:foo, @object).should == [
+            {:object => @object, :methods => ["foo"].sort},
+            {:object => Object, :methods => ["foo"].sort}
+          ]
+          
+          @finder.which(:foo3, @object).should == [
+            {:object => Object, :methods => ["foo3"].sort}
+          ]
         end
       end
     end
@@ -90,7 +102,9 @@ describe MethodLister::Finder do
       
       describe "#which" do
         it "returns method_missing its list of results if found" do
-          @finder.which("I_MATCH_NOTHING", @object).should == [Object]
+          @finder.which("I_MATCH_NOTHING", @object).should == [
+            {:object => Object, :methods => ["method_missing"].sort},
+          ]
         end
       end
     end    

@@ -17,9 +17,7 @@ module MethodLister
     end
 
     def which(method, object)
-      find(object).select do |record|
-        [method.to_s, "method_missing"].any? {|m| record[:methods].include?(m)}
-      end.map {|record| record[:object]}
+      grep(/^#{Regexp.escape(method.to_s)}$/, object)
     end
 
     private

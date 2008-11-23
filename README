@@ -13,17 +13,39 @@ Open up `~/.irbrc` and add these lines:
 Usage
 =====
 
+Method Lister is used to query objects and discover which ancestor implements
+which methods. It's quite common to have a lot of mixins and several classes
+in an object's class hierarchy, especially in a Rails application. To help
+with this Method Lister adds the ability to find out in which classes/modules
+the methods on an object are implemented.
+
 Method Lister adds 3 methods to all objects in the system: `ls`, `grep`, and
-`which`. Since these names are sometimes already taken you can also use `mls`,
-`mgrep`, and `mwhich`.
+`which`. Since these names are sometimes taken you can also use `mls`,
+`mgrep`, and `mwhich`.  
 
-ls
----
+Method Lister is intended to be used from IRB or during debugging.
 
-The `ls` command will list all methods an object responds to, organized by
-the module or class which provides the implementation.  For example:
+`ls` or `mls`
+-------------
+
+The `ls` command will list all methods an object responds to, organized by the
+module or class which provides the implementation. For example (results may
+vary, depending on what you have loaded):
 
     >> [].ls
+    ========== Module Kernel ==========
+    == === =~ __id__ __send__ class clone display dup eql? equal? extend
+    freeze frozen? gem grep hash id inspect instance_eval instance_of?
+    instance_variable_defined? instance_variable_get instance_variable_set
+    instance_variables is_a? kind_of? ls method methods mgrep mls mwhich nil?
+    object_id pretty_inspect private_methods protected_methods public_methods
+    require respond_to? send singleton_methods taint tainted? to_a to_s type
+    untaint which
+
+    ========== Module PP::ObjectMixin ==========
+    pretty_print pretty_print_cycle pretty_print_inspect
+    pretty_print_instance_variables
+
     ========== Module Enumerable ==========
     all? any? collect detect each_with_index entries find find_all grep
     include? inject map max member? min partition reject select sort sort_by
@@ -37,3 +59,50 @@ the module or class which provides the implementation.  For example:
     pretty_print_cycle push rassoc reject reject! replace reverse reverse!
     reverse_each rindex select shift size slice slice! sort sort! to_a to_ary
     to_s transpose uniq uniq! unshift values_at zip |
+    
+`grep` or `mgrep`
+-----------------
+
+The `grep` command takes a regular expression and only returns methods which
+match the given regex. In this example we'll use `mgrep` since on Array
+objects `grep` is already taken:
+
+    >> [].mgrep /f/
+    ========== Module Kernel ==========
+    freeze frozen? instance_of? instance_variable_defined? kind_of?
+
+    ========== Module Enumerable ==========
+    find find_all
+
+    ========== Class Array ==========
+    delete_if fetch fill first flatten flatten! frozen? shift unshift
+    
+NOTE: `method_missing` is always considered a match
+
+`which` or `mwhich`
+-------------------
+
+The `which` command is for finding which classes or modules implement the
+method you're seeking.
+
+    >> [].which :to_a
+    ========== Module Kernel ==========
+    to_a
+
+    ========== Module Enumerable ==========
+    to_a
+
+    ========== Class Array ==========
+    to_a
+
+NOTE: The `which` command is exactly the same as grep(/^method$/) with the
+method name regex escaped.
+
+NOTE: `method_missing` is always considered a match.
+
+MethodLister::Finder
+====================
+
+The method finding logic is encapsulated by `MethodLister::Finder`, which has
+three public methods: `ls`, `grep`, and `which`. However, instead of printing
+to $stdout the finder will return a data structure you can manipulate.

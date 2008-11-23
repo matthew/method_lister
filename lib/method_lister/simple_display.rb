@@ -27,7 +27,7 @@ module MethodLister
       obj = record[:object]
       return "Class #{obj}" if obj.kind_of? Class
       return "Module #{obj}" if obj.kind_of? Module
-      return "self"
+      return "Eigenclass"
     end
   end
 end

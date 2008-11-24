@@ -5,7 +5,31 @@ describe MethodLister::Finder do
     @finder = MethodLister::Finder.new
   end
   
-  describe "#find" do
+  describe "#find_all" do
+    before do
+      class UltraKlass; def method_ultra; end; end
+      class SuperKlass < UltraKlass; end
+      class Klass < SuperKlass; def method_klass; end; end
+      @object = Klass.new
+    end
+    
+    after do
+      Object.send(:remove_const, :Klass)
+      Object.send(:remove_const, :SuperKlass)
+      Object.send(:remove_const, :UltraKlass)
+    end
+    
+    it "does not filter results which have no methods" do
+      @finder.find_all(@object).should list_methods([
+        result(@object, :public => []),
+        result(Klass, :public => ["method_klass"]),
+        result(SuperKlass, :public => []),
+        result(UltraKlass, :public => ["method_ultra"])
+      ])
+    end
+  end
+  
+  describe "#ls" do
     it "should have more than one scenario" do
       all_find_scenarios.should_not be_empty
     end

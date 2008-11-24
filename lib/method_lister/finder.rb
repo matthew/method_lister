@@ -1,10 +1,14 @@
 module MethodLister
   class Finder
-    def ls(object)
+    def find_all(object)
       @results, @seen = Array.new, Hash.new
       record_methods_for_eigenclass(object)
       search_class_hierarchy(object.class)
       @results
+    end
+    
+    def ls(object)
+      find_all(object).select { |results| results.has_methods? }
     end
     
     def grep(rx, object)
@@ -50,8 +54,7 @@ module MethodLister
     end
     
     def record(result_options)
-      result = FindResult.new(result_options)
-      @results << result if result.has_methods?
+      @results << FindResult.new(result_options) 
     end
     
     def modules_for(obj_type, klass_or_module)

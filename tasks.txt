@@ -1,7 +1,10 @@
-- Get 100% rcov on all files
-- Add tests around the displayers
-- Add tests around the ruby extensions
+x Get 100% rcov on all files
+x Add tests around the displayers
+x Add tests around the ruby extensions
 - Setup github project
 - Setup ruby forget project
 x Get private and public methods working
 x Use object to represent finder results, instead of hash
+- update displayers to show private and public methods
+- add conditional displaying of private/public 
+x add public method to Finder that returns unfiltered results

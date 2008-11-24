@@ -43,7 +43,7 @@ module MethodLister
     end
 
     def coloring_methods
-      self.methods.select {|method| method =~ /^color_method_/}
+      private_methods.select {|method| method =~ /^color_method_/}
     end
 
     def color(string, *colors)
@@ -64,10 +64,6 @@ module MethodLister
       :white_bg => 47, :bold => 1, :underline => 4, :blink => 5, 
       :reverse => 7, :invisible => 8
     }
-
-    def clear_screen
-      print "\e[2J\e[H"
-    end
 
     def color_string(string, *colors)
       color_code(*colors) + string + color_code(:none)

@@ -5,8 +5,8 @@ describe MethodLister::ColorDisplay do
     before do
       @results = [
         result(Object.new, :public => ["foo"]),
-        result(Object, :public => ["bar"]),
-        result(Kernel, :public => ["baz"]),
+        result(Array,  :public => ["bar"] + Array.public_instance_methods(false)),
+        result(Kernel, :public => ["baz"] + Kernel.public_instance_methods(false)),
       ]
       
       @displayer = MethodLister::ColorDisplay.new
@@ -19,7 +19,7 @@ describe MethodLister::ColorDisplay do
     
     it "attempts to write out the relevant information" do
       @displayer.display @results
-      @output.should =~ /Module Kernel.*baz.*Class Object.*bar.*Eigenclass.*foo/m
+      @output.should =~ /Module Kernel.*.*Class Array.*bar.*Eigenclass.*foo/m
     end
     
     it "does not add ANSI codes if output is not a tty" do

@@ -11,7 +11,6 @@ describe MethodLister::Finder do
     end
     
     all_find_scenarios.each do |scenario|
-      # next unless scenario.name == "private_methods"
       it "finds method according to scenario #{scenario.name}" do
         scenario.setup!
         @finder.ls(scenario.object).should list_methods(scenario.expected)

@@ -162,9 +162,9 @@ method you're seeking. You can pass the method name in as a string or symbol.
     ========== Class Array ==========
     PUBLIC: to_a
 
-Logically the `which` command is the same as grep(/^your_method$/) and so the
-same comments apply about `method_missing` and the optional parameter to see
-protected/private methods.
+Logically the `which` command is the same as `grep(/^your_method$/)` and so
+the same comments apply about `method_missing` and the optional parameter to
+see protected/private methods.
 
 License
 =======

@@ -6,6 +6,10 @@ describe MethodLister::Finder do
   end
   
   describe "#find" do
+    it "should have more than one scenario" do
+      all_find_scenarios.should_not be_empty
+    end
+    
     all_find_scenarios.each do |scenario|
       # next unless scenario.name == "private_methods"
       it "finds method according to scenario #{scenario.name}" do

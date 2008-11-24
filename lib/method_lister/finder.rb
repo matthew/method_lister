@@ -2,66 +2,96 @@ module MethodLister
   class Finder
     def ls(object)
       @results, @seen = Array.new, Hash.new
-      scan :eigenclass, object, :singleton_methods
+      record_methods_for_eigenclass(object)
       search_class_hierarchy(object.class)
       @results
     end
-
+    
     def grep(rx, object)
       ls(object).map do |result|
         result.narrow_to_methods_matching!(rx)
       end.select { |result| result.has_methods? }
     end
-
+    
     def which(method, object)
       grep(/^#{Regexp.escape(method.to_s)}$/, object)
     end
 
     private
-
+    
     def search_class_hierarchy(klass)
       while klass
-        scan :class, klass, :instance_methods
+        scan :class, klass
         klass = klass.superclass
       end
     end
-
-    def scan(obj_type, obj, lister_method)
-      unless @seen.has_key? obj
-        @seen[obj] = true
-        record_methods obj, lister_method
-        modules_for(obj_type, obj).each do |_module|
-          scan :module, _module, :instance_methods
-        end
+    
+    def scan(type, klass_or_module)
+      unless @seen.has_key? klass_or_module
+        @seen[klass_or_module] = true
+        record_methods_for klass_or_module
+        scan_modules(type, klass_or_module)
       end
     end
-
-    def record_methods(object, lister_method)
-      methods = object.send(lister_method, false).sort
-      unless methods.empty?
-        @results << FindResult.new(:object => object, :public => methods)
+    
+    def scan_modules(type, klass_or_module)
+      modules_for(type, klass_or_module).each do |a_module|
+        scan :module, a_module
       end
     end
-
-    def modules_for(obj_type, obj)
+    
+    def record_methods_for(klass_or_module)
+      record(
+        :object    => klass_or_module,
+        :public    => klass_or_module.public_instance_methods(false),
+        :protected => klass_or_module.protected_instance_methods(false),
+        :private   => klass_or_module.private_instance_methods(false)
+      )
+    end
+    
+    def record(result_options)
+      result = FindResult.new(result_options)
+      @results << result if result.has_methods?
+    end
+    
+    def modules_for(obj_type, klass_or_module)
       case obj_type
       when :module
-        obj.included_modules
+        klass_or_module.included_modules
       when :class
-        if obj.superclass
-          obj.included_modules - obj.superclass.included_modules
+        if superclass = klass_or_module.superclass
+          klass_or_module.included_modules - superclass.included_modules
         else
-          obj.included_modules
+          klass_or_module.included_modules
         end
       when :eigenclass
-        if eigenclass = get_eigenclass(obj)
-          eigenclass.included_modules - obj.class.included_modules
+        if eigenclass = get_eigenclass(klass_or_module)
+          eigenclass.included_modules - klass_or_module.class.included_modules
         else
           []
         end
       end
     end
+    
+    def record_methods_for_eigenclass(object)
+      @seen[object] = true
+      return unless eigenclass = get_eigenclass(object)
 
+      singleton_methods = object.singleton_methods(false)
+      public_methods    = eigenclass.public_instance_methods(false)
+      protected_methods = eigenclass.protected_instance_methods(false)
+      
+      class_private_methods = object.class.private_instance_methods(false)
+      private_methods   = eigenclass.private_instance_methods(false)
+
+      record(:object    => object, 
+             :public    => singleton_methods & public_methods,
+             :protected => singleton_methods & protected_methods,
+             :private   => private_methods - class_private_methods)
+             
+      scan_modules(:eigenclass, object)
+    end
+    
     def get_eigenclass(object)
       class << object; self; end
     rescue TypeError

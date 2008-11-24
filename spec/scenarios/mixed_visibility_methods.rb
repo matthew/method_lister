@@ -22,15 +22,15 @@ module FindScenarioNameSpace
   end
   
   @expected = [
-    result(@object, :public    => ["eigen_public", "common_public"],
+    result(@object, :public    => ["eigen_public",    "common_public"   ],
                     :protected => ["eigen_protected", "common_protected"],
-                    :private   => ["eigen_private"]),
-                    # :private   => ["eigen_private", "common_private"])
-    result(MyModule, :public    => ["module_public", "common_public"],
+                    :private   => ["eigen_private"                      ]),
+                  # :private   => ["eigen_private",   "common_private"  ]),
+    result(MyModule, :public    => ["module_public",    "common_public"   ],
                      :protected => ["module_protected", "common_protected"],
-                     :private   => ["module_private", "common_private"]),
-    result(Klass, :public    => ["klass_public", "common_public"],
+                     :private   => ["module_private",   "common_private"  ]),
+    result(Klass, :public    => ["klass_public",    "common_public"   ],
                   :protected => ["klass_protected", "common_protected"],
-                  :private   => ["klass_private", "common_private"])
+                  :private   => ["klass_private",   "common_private"  ])
   ]
 end

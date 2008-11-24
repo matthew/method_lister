@@ -77,6 +77,11 @@ module MethodLister
       @seen[object] = true
       return unless eigenclass = get_eigenclass(object)
 
+      # This complication arises because the methods used to do reflection on
+      # eigenclasses will return methods from the object's class.  For public
+      # and protected methods we can determine where the method came from, but
+      # for private methods we have to do a heuristic guess.  c.f. scenario
+      # "mixed_visibility_methods.rb"
       singleton_methods = object.singleton_methods(false)
       public_methods    = eigenclass.public_instance_methods(false)
       protected_methods = eigenclass.protected_instance_methods(false)

@@ -1,32 +1,32 @@
 module MethodLister
   class SimpleDisplay
     def display(findings)
-      findings.reverse.each do |record|
-        puts header(record)
-        puts method_list(record)
-        puts seperator(record)
+      findings.reverse.each do |result|
+        puts header(result)
+        puts method_list(result)
+        puts seperator(result)
       end
       nil
     end
 
     private
 
-    def header(record)
-      "========== #{location_description(record)} =========="
+    def header(result)
+      "========== #{location_description(result)} =========="
     end
 
-    def method_list(record)
-      record[:methods].join("  ")
+    def method_list(result)
+      record.methods(:all).join("  ")
     end
 
-    def seperator(record)
+    def seperator(result)
       ""
     end
 
-    def location_description(record)
-      obj = record[:object]
-      return "Class #{obj}" if obj.kind_of? Class
-      return "Module #{obj}" if obj.kind_of? Module
+    def location_description(result)
+      object = result.object
+      return "Class #{object}" if object.kind_of? Class
+      return "Module #{object}" if object.kind_of? Module
       return "Eigenclass"
     end
   end

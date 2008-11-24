@@ -6,7 +6,7 @@ module MethodLister
 
     private
 
-    def location_description(record)
+    def location_description(result)
       color(super, :yellow_fg, :bold)
     end
 
@@ -28,9 +28,9 @@ module MethodLister
       end
     end
 
-    def method_list(record)
-      record[:methods].map do |method| 
-        color_method(record[:object], method)
+    def method_list(result)
+      result.methods(:all).map do |method| 
+        color_method(result.object, method)
       end.join(" ")
     end
 

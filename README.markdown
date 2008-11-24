@@ -18,7 +18,9 @@ Install
 
 Get the gem:
 
-  sudo gem install matthew-method_lister
+  # Build it, since it's not published yet
+  rake gem
+  sudo gem install pkg/*.gem
 
 Open up `~/.irbrc` and add these lines:
 

@@ -16,7 +16,7 @@ module MethodLister
     end
 
     def method_list(result)
-      record.methods(:all).join("  ")
+      result.methods(:all).join("  ")
     end
 
     def seperator(result)

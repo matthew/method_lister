@@ -65,11 +65,8 @@ module MethodLister
           klass_or_module.included_modules
         end
       when :eigenclass
-        if eigenclass = get_eigenclass(klass_or_module)
-          eigenclass.included_modules - klass_or_module.class.included_modules
-        else
-          []
-        end
+        eigenclass = get_eigenclass(klass_or_module)
+        eigenclass.included_modules - klass_or_module.class.included_modules
       end
     end
     

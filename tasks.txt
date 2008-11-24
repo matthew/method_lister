@@ -3,5 +3,5 @@
 - Add tests around the ruby extensions
 - Setup github project
 - Setup ruby forget project
-- Get private and public methods working
+x Get private and public methods working
 x Use object to represent finder results, instead of hash

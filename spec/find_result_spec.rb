@@ -124,7 +124,7 @@ describe MethodLister::FindResult do
       @mixed_result.methods(:all).select {|meth| meth !~ rx}.should be_empty 
     end
     
-    it "never removes method missing" do
+    it "never removes method_missing" do
       @private << "method_missing"
       rx = /foo/
       @mixed_result.methods(:all).select {|meth| meth !~ rx}.should_not be_empty 

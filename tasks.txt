@@ -5,6 +5,6 @@ x Add tests around the ruby extensions
 - Setup ruby forget project
 x Get private and public methods working
 x Use object to represent finder results, instead of hash
-- update displayers to show private and public methods
+x update displayers to show private and public methods
 - add conditional displaying of private/public 
 x add public method to Finder that returns unfiltered results

@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 describe "Method Lister Ruby Extensions" do
   describe Kernel do
     before do
-      mock.instance_of(MethodLister::ColorDisplay).display(:mcguffin) { nil }
+      mock.instance_of(MethodLister::ColorDisplay).display(:mcguffin, anything) { nil }
       @finder_class_double = mock.instance_of(MethodLister::Finder)
       @object = Object.new
     end

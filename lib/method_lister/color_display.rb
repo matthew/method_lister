@@ -17,7 +17,7 @@ module MethodLister
     end
 
     def color_method_missing(source, method)
-      color(method, :red_fg, :blink) if method == "method_missing"
+      color(method, :red_fg) if method == "method_missing"
     end
 
     def color_method_array_primative(source, method)
@@ -28,10 +28,8 @@ module MethodLister
       end
     end
 
-    def method_list(result)
-      result.methods(:all).map do |method| 
-        color_method(result.object, method)
-      end.join(" ")
+    def process_method(result, method)
+      color_method(result.object, method)
     end
 
     def color_method(source, method)

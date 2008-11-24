@@ -18,9 +18,9 @@ Install
 
 Get the gem:
 
-  # Build it, since it's not published yet
-  rake gem
-  sudo gem install pkg/*.gem
+    # Build it, since it's not published yet
+    rake gem
+    sudo gem install pkg/*.gem
 
 Open up `~/.irbrc` and add these lines:
 

@@ -7,6 +7,7 @@ describe MethodLister::Finder do
   
   describe "#find" do
     all_find_scenarios.each do |scenario|
+      # next unless scenario.name == "private_methods"
       it "finds method according to scenario #{scenario.name}" do
         scenario.setup!
         @finder.ls(scenario.object).should list_methods(scenario.expected)
@@ -24,8 +25,8 @@ describe MethodLister::Finder do
         stub(@finder).ls(@object) do
           [
             result(@object, :public => ["bar", "foo", "foo2"]),
-            result(Object, :public => ["foo", "foo3", "qux"]),
-            result(Kernel, :public => ["baz"]),
+            result(Object,  :public => ["foo", "foo3", "qux"]),
+            result(Kernel,  :public => ["baz"]),
           ]
         end
       end
@@ -34,7 +35,7 @@ describe MethodLister::Finder do
         it "narrows down the find results based on the given regex" do
           @finder.grep(/foo/, @object).should == [
             result(@object, :public => ["foo", "foo2"]),
-            result(Object, :public => ["foo", "foo3"])
+            result(Object,  :public => ["foo", "foo3"])
           ]
         end
       end
@@ -49,7 +50,7 @@ describe MethodLister::Finder do
         it "returns the classes and objects hold the method" do
           @finder.which("foo", @object).should == [
             result(@object, :public => ["foo"]),
-            result(Object, :public => ["foo"])
+            result(Object,  :public => ["foo"])
           ]
           
           @finder.which("foo3", @object).should == [
@@ -60,7 +61,7 @@ describe MethodLister::Finder do
         it "works correctly with symbols" do
           @finder.which(:foo, @object).should == [
             result(@object, :public => ["foo"]),
-            result(Object, :public => ["foo"])
+            result(Object,  :public => ["foo"])
           ]
           
           @finder.which(:foo3, @object).should == [
@@ -92,7 +93,7 @@ describe MethodLister::Finder do
       before do
         stub(@finder).ls(@object) do
           [
-            result(Array, :public => ["sort1", "sort2"]),
+            result(Array,  :public => ["sort1", "sort2"]),
             result(Object, :public => ["method_missing", "sort3"])
           ]
         end

@@ -25,7 +25,7 @@ class FindScenario
     private
     
     def scenario_dir
-      File.expand_path(File.dirname(__FILE__) + "/../scenarios")
+      File.expand_path(File.dirname(__FILE__) + "/../../scenarios")
     end
   end
 end

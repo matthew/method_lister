@@ -38,5 +38,13 @@ module MethodLister
       object.eql?(other.object) && 
       methods(:all).sort == other.methods(:all).sort
     end
+    
+    def inspect
+      repr = "object=#{object.inspect}"
+      VISIBILITIES.each do |visibility|
+        repr += " #{visibility}=#{methods(visibility).sort.inspect}"
+      end
+      "<#{repr}>"
+    end
   end
 end

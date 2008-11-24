@@ -14,14 +14,28 @@ module MethodListerMatchers
     end
   
     def failure_message
-      <<-MESSAGE
-      Expected: #{@expected.inspect}
-           Got: #{@target.inspect}
-      MESSAGE
+      str, n = "", 0
+      @expected.zip(@target).each do |expected, got|
+        if expected != got
+          str += <<-MESSAGE
+          Expected[#{n}]: #{expected.inspect}
+               Got[#{n}]: #{got.inspect}
+             
+          MESSAGE
+        end
+        n += 1
+      end
+      str
     end
     
     def negative_failure_message
       "Did not expect these findings: #{@expected.inspect}"
+    end
+    
+    private
+    
+    def render_find_results(results)
+      results.map {|result| "   #{result.inspect}" }.join("\n")
     end
   end
 end

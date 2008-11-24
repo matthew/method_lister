@@ -80,14 +80,15 @@ module MethodLister
       singleton_methods = object.singleton_methods(false)
       public_methods    = eigenclass.public_instance_methods(false)
       protected_methods = eigenclass.protected_instance_methods(false)
-      
-      class_private_methods = object.class.private_instance_methods(false)
       private_methods   = eigenclass.private_instance_methods(false)
-
+      ancestor_privates = eigenclass.ancestors.map do |ancestor|
+        ancestor.private_instance_methods(false)
+      end.flatten.uniq
+      
       record(:object    => object, 
              :public    => singleton_methods & public_methods,
              :protected => singleton_methods & protected_methods,
-             :private   => private_methods - class_private_methods)
+             :private   => private_methods - ancestor_privates)
              
       scan_modules(:eigenclass, object)
     end

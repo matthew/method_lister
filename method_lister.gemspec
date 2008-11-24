@@ -9,7 +9,7 @@ GemSpec = Gem::Specification.new do |s|
     s.summary   =   "Pretty method listers and finders, for use in IRB."
     s.files     =   Dir['lib/*.rb', 'spec/*'].to_a
     s.require_path  =   "lib"
-    s.test_files    = Dir.glob('spec/**/*_spec.rb')
+    s.test_files    = Dir['spec/**/*_spec.rb'].to_a
     s.has_rdoc      =  true
     s.extra_rdoc_files = ["README.markdown"]
 end

@@ -18,7 +18,7 @@ module MethodLister
         @methods[visibility]
       else
         raise ArgumentError, "Unknown visibility #{visibility.inspect}"
-      end
+      end.sort
     end
     
     def has_methods?(visibility=:all)

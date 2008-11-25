@@ -1,7 +1,7 @@
 GemSpec = Gem::Specification.new do |s|
     s.platform  =   Gem::Platform::RUBY
     s.name      =   "method_lister"
-    s.version   =   "0.2.1"
+    s.version   =   "0.2.2"
     s.author    =   "Matthew O'Connor"
     s.email     =   "matthew @nospam@ canonical.org"
     s.homepage  =   "http://github.com/matthew/method_lister/tree/master"

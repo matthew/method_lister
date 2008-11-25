@@ -37,34 +37,34 @@ describe MethodLister::FindResult do
   describe "#methods" do
     it "knows all its methods" do
       @empty_result.methods(:all).should be_empty
-      @only_public.methods(:all).should == @public
-      @only_protected.methods(:all).should == @protected
-      @only_private.methods(:all).should == @private
-      @mixed_result.methods(:all).should == @all
+      @only_public.methods(:all).should == @public.sort
+      @only_protected.methods(:all).should == @protected.sort
+      @only_private.methods(:all).should == @private.sort
+      @mixed_result.methods(:all).should == @all.sort
     end
 
     it "knows its public methods" do
       @empty_result.methods(:public).should be_empty
-      @only_public.methods(:public).should == @public
+      @only_public.methods(:public).should == @public.sort
       @only_protected.methods(:public).should be_empty
       @only_private.methods(:public).should be_empty
-      @mixed_result.methods(:public).should == @public
+      @mixed_result.methods(:public).should == @public.sort
     end
 
     it "knows its protected methods" do
       @empty_result.methods(:protected).should be_empty
       @only_public.methods(:protected).should be_empty
-      @only_protected.methods(:protected).should == @protected
+      @only_protected.methods(:protected).should == @protected.sort
       @only_private.methods(:protected).should be_empty
-      @mixed_result.methods(:protected).should == @protected
+      @mixed_result.methods(:protected).should == @protected.sort
     end
 
     it "knows its private methods" do
       @empty_result.methods(:private).should be_empty
       @only_public.methods(:private).should be_empty
       @only_protected.methods(:private).should be_empty
-      @only_private.methods(:private).should == @private
-      @mixed_result.methods(:private).should == @private
+      @only_private.methods(:private).should == @private.sort
+      @mixed_result.methods(:private).should == @private.sort
     end
     
     it "raises an exception if given an unknown visibility" do

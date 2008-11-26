@@ -23,9 +23,8 @@ Get the gem:
     
     # Install the gem
     sudo gem install matthew-method_lister
-
-Build the gem:
     
+    # Otherwise, build the gem and install it
     rake gem
     sudo gem install pkg/*.gem
 
@@ -46,76 +45,76 @@ vary, depending on what you have loaded):
 
     >> [].ls
     ========== Module Kernel ==========
-    PUBLIC: inspect clone method public_methods instance_variable_defined?
-    equal? which freeze grep mgrep methods respond_to? dup instance_variables
-    __id__ object_id eql? require id singleton_methods send taint frozen?
-    instance_variable_get __send__ instance_of? mls to_a type mwhich
-    protected_methods instance_eval == display === ls instance_variable_set
-    kind_of? extend to_s gem hash pretty_inspect class tainted? =~
-    private_methods nil? untaint is_a?
+    PUBLIC: == === =~ __id__ __send__ class clone display dup eql? equal?
+    extend freeze frozen? gem grep hash id inspect instance_eval instance_of?
+    instance_variable_defined? instance_variable_get instance_variable_set
+    instance_variables is_a? kind_of? ls method methods mgrep mls mwhich nil?
+    object_id pretty_inspect private_methods protected_methods public_methods
+    require respond_to? send singleton_methods taint tainted? to_a to_s type
+    untaint which
 
     ========== Module PP::ObjectMixin ==========
-    PUBLIC: pretty_print_instance_variables pretty_print_inspect pretty_print
-    pretty_print_cycle
+    PUBLIC: pretty_print pretty_print_cycle pretty_print_inspect
+    pretty_print_instance_variables
 
     ========== Module Enumerable ==========
-    PUBLIC: find_all sort_by collect include? detect max sort partition any?
-    to_a reject zip find min member? entries inject all? select
-    each_with_index grep map
+    PUBLIC: all? any? collect detect each_with_index entries find find_all
+    grep include? inject map max member? min partition reject select sort
+    sort_by to_a zip
 
     ========== Class Array ==========
-    PUBLIC: delete_if & map! empty? indexes rindex reject last to_s assoc
-    reverse! sort each include? values_at slice * sort! each_index fetch +
-    clear pretty_print concat size join flatten! shift - eql? reverse to_ary
-    insert [] indices nitems inspect rassoc replace compact! []= | collect
-    push delete_at << frozen? reverse_each flatten hash collect! uniq! select
-    first to_a fill index reject! zip pack unshift compact transpose <=>
-    pretty_print_cycle at == slice! length uniq delete pop map
+    PUBLIC: & * + - << <=> == [] []= assoc at clear collect collect! compact
+    compact! concat delete delete_at delete_if each each_index empty? eql?
+    fetch fill first flatten flatten! frozen? hash include? index indexes
+    indices insert inspect join last length map map! nitems pack pop
+    pretty_print pretty_print_cycle push rassoc reject reject! replace reverse
+    reverse! reverse_each rindex select shift size slice slice! sort sort!
+    to_a to_ary to_s transpose uniq uniq! unshift values_at zip |
 
 You can show protected and private methods too by passing in "true":
 
     >> [].ls true
     ========== Module Kernel ==========
-    PUBLIC: inspect clone method public_methods instance_variable_defined?
-    equal? which freeze grep mgrep methods respond_to? dup instance_variables
-    __id__ object_id eql? require id singleton_methods send taint frozen?
-    instance_variable_get __send__ instance_of? mls to_a type mwhich
-    protected_methods instance_eval == display === ls instance_variable_set
-    kind_of? extend to_s gem hash pretty_inspect class tainted? =~
-    private_methods nil? untaint is_a?
+    PUBLIC: == === =~ __id__ __send__ class clone display dup eql? equal?
+    extend freeze frozen? gem grep hash id inspect instance_eval instance_of?
+    instance_variable_defined? instance_variable_get instance_variable_set
+    instance_variables is_a? kind_of? ls method methods mgrep mls mwhich nil?
+    object_id pretty_inspect private_methods protected_methods public_methods
+    require respond_to? send singleton_methods taint tainted? to_a to_s type
+    untaint which
 
-    PRIVATE: select global_variables readline warn singleton_method_added gsub
-    exit! method_missing exec abort load chomp! remove_instance_variable print
-    eval proc untrace_var srand Integer local_variables
-    singleton_method_removed readlines raise chop getc gem_original_require
-    system at_exit putc set_trace_func rand test lambda Float p
-    initialize_copy singleton_method_undefined chomp fail callcc sub! syscall
-    sleep iterator? catch autoload puts ` pp String sprintf split caller gsub!
-    open block_given? throw URI gets trap sub loop Array fork format exit
-    chop! printf binding autoload? scan trace_var
+    PRIVATE: Array Float Integer String URI ` abort at_exit autoload autoload?
+    binding block_given? callcc caller catch chomp chomp! chop chop! eval exec
+    exit exit! fail fork format gem_original_require getc gets
+    global_variables gsub gsub! initialize_copy iterator? lambda load
+    local_variables loop method_missing open p pp print printf proc putc puts
+    raise rand readline readlines remove_instance_variable scan select
+    set_trace_func singleton_method_added singleton_method_removed
+    singleton_method_undefined sleep split sprintf srand sub sub! syscall
+    system test throw trace_var trap untrace_var warn
 
     ========== Module PP::ObjectMixin ==========
-    PUBLIC: pretty_print_instance_variables pretty_print_inspect pretty_print
-    pretty_print_cycle
+    PUBLIC: pretty_print pretty_print_cycle pretty_print_inspect
+    pretty_print_instance_variables
 
     ========== Class Object ==========
-    PRIVATE: initialize  timeout  irb_binding
+    PRIVATE: initialize irb_binding timeout
 
     ========== Module Enumerable ==========
-    PUBLIC: find_all sort_by collect include? detect max sort partition any?
-    to_a reject zip find min member? entries inject all? select
-    each_with_index grep map
+    PUBLIC: all? any? collect detect each_with_index entries find find_all
+    grep include? inject map max member? min partition reject select sort
+    sort_by to_a zip
 
     ========== Class Array ==========
-    PUBLIC: delete_if & map! empty? indexes rindex reject last to_s assoc
-    reverse! sort each include? values_at slice * sort! each_index fetch +
-    clear pretty_print concat size join flatten! shift - eql? reverse to_ary
-    insert [] indices nitems inspect rassoc replace compact! []= | collect
-    push delete_at << frozen? reverse_each flatten hash collect! uniq! select
-    first to_a fill index reject! zip pack unshift compact transpose <=>
-    pretty_print_cycle at == slice! length uniq delete pop map
+    PUBLIC: & * + - << <=> == [] []= assoc at clear collect collect! compact
+    compact! concat delete delete_at delete_if each each_index empty? eql?
+    fetch fill first flatten flatten! frozen? hash include? index indexes
+    indices insert inspect join last length map map! nitems pack pop
+    pretty_print pretty_print_cycle push rassoc reject reject! replace reverse
+    reverse! reverse_each rindex select shift size slice slice! sort sort!
+    to_a to_ary to_s transpose uniq uniq! unshift values_at zip |
 
-    PRIVATE: initialize_copy initialize
+    PRIVATE: initialize initialize_copy
     
 `grep` or `mgrep`
 -----------------
@@ -126,29 +125,29 @@ objects `grep` is already taken:
 
     >> [].mgrep /f/
     ========== Module Kernel ==========
-    PUBLIC: instance_variable_defined? freeze frozen? instance_of? kind_of?
+    PUBLIC: freeze frozen? instance_of? instance_variable_defined? kind_of?
 
     ========== Module Enumerable ==========
-    PUBLIC: find_all  find
+    PUBLIC: find find_all
 
     ========== Class Array ==========
-    PUBLIC: delete_if fetch flatten! shift frozen? flatten first fill unshift
+    PUBLIC: delete_if fetch fill first flatten flatten! frozen? shift unshift
 
 Similar to `ls` you can pass in an extra argument of "true" to see protected
 and private methods:
 
     >> [].mgrep /f/, true
     ========== Module Kernel ==========
-    PUBLIC: instance_variable_defined? freeze frozen? instance_of? kind_of?
+    PUBLIC: freeze frozen? instance_of? instance_variable_defined? kind_of?
 
-    PRIVATE: method_missing set_trace_func singleton_method_undefined fail
-    sprintf fork format printf
+    PRIVATE: fail fork format method_missing printf set_trace_func
+    singleton_method_undefined sprintf
 
     ========== Module Enumerable ==========
-    PUBLIC: find_all find
+    PUBLIC: find find_all
 
     ========== Class Array ==========
-    PUBLIC: delete_if fetch flatten! shift frozen? flatten first fill unshift
+    PUBLIC: delete_if fetch fill first flatten flatten! frozen? shift unshift
     
 Note that `method_missing` is always considered a match, since it could always
 potentially execute.

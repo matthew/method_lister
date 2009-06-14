@@ -179,21 +179,21 @@ If a singleton method overrides some method from an ancestor then the method
 will be reported on the ancestor only and not both the ancestor and the
 eigenclass. For example:
 
-  >> class Foo; def doit; end; end
-  => nil
+    >> class Foo; def doit; end; end
+    => nil
 
-  >> f = Foo.new
-  => #<Foo:0x3395a0>
+    >> f = Foo.new
+    => #<Foo:0x3395a0>
 
-  >> class << f; def doit; end; end
-  => nil
+    >> class << f; def doit; end; end
+    => nil
 
-  >> f.mgrep /doit/
-  ========== Module Kernel ==========
-  PRIVATE: method_missing
+    >> f.mgrep /doit/
+    ========== Module Kernel ==========
+    PRIVATE: method_missing
 
-  ========== Class Foo ==========
-  PUBLIC: doit
+    ========== Class Foo ==========
+    PUBLIC: doit
   
 This was done on purpose to support listing singleton methods on cloned
 objects. I couldn't support both features since the reflection methods for

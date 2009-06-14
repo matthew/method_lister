@@ -17,10 +17,11 @@ module MethodListerMatchers
       str, n = "", 0
       @expected.zip(@target).each do |expected, got|
         if expected != got
-          str += <<-MESSAGE
-          Expected[#{n}]: #{expected.inspect}
-               Got[#{n}]: #{got.inspect}
-             
+          str += <<-MESSAGE          
+Expected[#{n}]: 
+#{expected.inspect}
+Got[#{n}]: 
+#{got.inspect}             
           MESSAGE
         end
         n += 1

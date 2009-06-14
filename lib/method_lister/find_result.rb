@@ -40,11 +40,11 @@ module MethodLister
     end
     
     def inspect
-      repr = "object=#{object.inspect}"
+      repr = "object=#{object.inspect}\n"
       VISIBILITIES.each do |visibility|
-        repr += " #{visibility}=#{methods(visibility).sort.inspect}"
+        repr += "#{visibility}=#{methods(visibility).sort.inspect}\n"
       end
-      "<#{repr}>"
+      repr
     end
   end
 end

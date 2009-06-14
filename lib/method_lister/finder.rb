@@ -73,27 +73,33 @@ module MethodLister
       end
     end
     
+    # This method is awfully complicated and does not give accurate answers
+    # because the reflection methods for eigenclasses do not work correctly. 
+    # The singleton_methods(false) call will return all public and protected
+    # singleton methods, but not the private ones. And the
+    # *_instance_methods(false) calls will include the methods defined on the
+    # class in addition to singleton methods. c.f the following test scenarios:
+    # mixed_visibility_methods.rb and cloned_eigenclass.rb
     def record_methods_for_eigenclass(object)
       @seen[object] = true
       return unless eigenclass = get_eigenclass(object)
 
-      # This complication arises because the methods used to do reflection on
-      # eigenclasses will return methods from the object's class.  For public
-      # and protected methods we can determine where the method came from, but
-      # for private methods we have to do a heuristic guess.  c.f. scenario
-      # "mixed_visibility_methods.rb"
-      singleton_methods = object.singleton_methods(false)
-      public_methods    = eigenclass.public_instance_methods(false)
-      protected_methods = eigenclass.protected_instance_methods(false)
-      private_methods   = eigenclass.private_instance_methods(false)
-      ancestor_privates = eigenclass.ancestors.map do |ancestor|
-        ancestor.private_instance_methods(false)
-      end.flatten.uniq
+      our_public_methods    = eigenclass.public_instance_methods(false)
+      our_protected_methods = eigenclass.protected_instance_methods(false)
+      our_private_methods   = eigenclass.private_instance_methods(false)
+
+      ancestor_methods = Hash.new
+      [:public, :protected, :private].each do |method_type|
+        ancestor_methods[method_type] = eigenclass.ancestors.map do |ancestor|
+          ancestor.send("#{method_type}_instance_methods", false)
+        end.flatten.uniq
+      end
       
       record_result(object, 
-             :public    => singleton_methods & public_methods,
-             :protected => singleton_methods & protected_methods,
-             :private   => private_methods - ancestor_privates)
+        :public => our_public_methods - ancestor_methods[:public],
+        :protected => our_protected_methods - ancestor_methods[:protected],
+        :private => our_private_methods - ancestor_methods[:private]
+      )
              
       scan_modules(:eigenclass, object)
     end

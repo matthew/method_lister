@@ -1,4 +1,5 @@
-Gem::manage_gems
+require 'rubygems'
+require 'rubygems/gem_runner'
 
 require 'rake/gempackagetask'
 load "#{ROOT_DIR}/method_lister.gemspec"

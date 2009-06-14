@@ -9,24 +9,23 @@ describe MethodLister::FindResult do
     @all       = @public + @protected + @private
 
     @object         = Object.new
-    @empty_result   = MethodLister::FindResult.new(:object => @object)
-    @only_public    = MethodLister::FindResult.new(:object => @object, 
+    @empty_result   = MethodLister::FindResult.new(@object)
+    @only_public    = MethodLister::FindResult.new(@object, 
                                                    :public => @public)
-    @only_protected = MethodLister::FindResult.new(:object => @object, 
+    @only_protected = MethodLister::FindResult.new(@object, 
                                                    :protected => @protected)
-    @only_private   = MethodLister::FindResult.new(:object => @object,
+    @only_private   = MethodLister::FindResult.new(@object,
                                                    :private => @private)
-    @mixed_result   = MethodLister::FindResult.new(:object => @object,
+    @mixed_result   = MethodLister::FindResult.new(@object,
                                                    :public => @public,
                                                    :protected => @protected,
                                                    :private => @private)
   end
   
   describe "#object" do
-    it "requires at least an associated object" do
-      lambda do
-        MethodLister::FindResult.new(:public => @public)
-      end.should raise_error(ArgumentError)
+    it "works even if object is nil" do
+      result = MethodLister::FindResult.new(nil, :public => @public)
+      result.object.should be_nil
     end
     
     it "knows its associated object" do
@@ -136,7 +135,7 @@ describe MethodLister::FindResult do
   describe "#==" do
     it "is equal if both have the same methods and object" do
       @mixed_result.should == MethodLister::FindResult.new(
-        :object    => @mixed_result.object,
+        @mixed_result.object,
         :public    => @mixed_result.methods(:public),
         :protected => @mixed_result.methods(:protected),
         :private   => @mixed_result.methods(:private)
@@ -145,7 +144,7 @@ describe MethodLister::FindResult do
     
     it "is not equal if both have same methods but different objects" do
       @mixed_result.should_not == MethodLister::FindResult.new(
-        :object    => Object.new,
+        Object.new,
         :public    => @mixed_result.methods(:public),
         :protected => @mixed_result.methods(:protected),
         :private   => @mixed_result.methods(:private)
@@ -154,7 +153,7 @@ describe MethodLister::FindResult do
 
     it "is not equal if both have the same object but different methods" do
       @mixed_result.should_not == MethodLister::FindResult.new(
-        :object    => @mixed_result.object,
+        @mixed_result.object,
         :public    => ["something_else"]
       )
     end

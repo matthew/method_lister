@@ -45,16 +45,16 @@ module MethodLister
     end
     
     def record_methods_for(klass_or_module)
-      record(
-        :object    => klass_or_module,
+      record_result(
+        klass_or_module,
         :public    => klass_or_module.public_instance_methods(false),
         :protected => klass_or_module.protected_instance_methods(false),
         :private   => klass_or_module.private_instance_methods(false)
       )
     end
     
-    def record(result_options)
-      @results << FindResult.new(result_options) 
+    def record_result(*args)
+      @results << FindResult.new(*args) 
     end
     
     def modules_for(obj_type, klass_or_module)
@@ -90,7 +90,7 @@ module MethodLister
         ancestor.private_instance_methods(false)
       end.flatten.uniq
       
-      record(:object    => object, 
+      record_result(object, 
              :public    => singleton_methods & public_methods,
              :protected => singleton_methods & protected_methods,
              :private   => private_methods - ancestor_privates)

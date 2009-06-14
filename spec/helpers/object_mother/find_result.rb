@@ -1,3 +1,3 @@
 def result(object, options)
-  MethodLister::FindResult.new(options.merge(:object => object))
+  MethodLister::FindResult.new(object, options)
 end

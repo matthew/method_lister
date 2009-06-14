@@ -1,8 +1,8 @@
 module MethodLister
   class SimpleDisplay
-    def display(findings, show_non_public=false)
+    def display(findings, show_public_only=false)
       findings.reverse.each do |result|
-        list = method_list(result, show_non_public)
+        list = method_list(result, show_public_only)
         if !list.empty?
           puts header(result)
           puts list
@@ -18,9 +18,9 @@ module MethodLister
       "========== #{location_description(result)} =========="
     end
 
-    def method_list(result, show_non_public)
+    def method_list(result, show_public_only)
       FindResult::VISIBILITIES.map do |visibility|
-        (visibility == :public || show_non_public) ?
+        (visibility == :public || !show_public_only) ?
           method_set(result, visibility) : 
           nil
       end.compact.join("\n\n")

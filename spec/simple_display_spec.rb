@@ -23,16 +23,16 @@ describe MethodLister::SimpleDisplay do
       @output.should =~ /Module Kernel.*baz.*Class Object.*bar.*Eigenclass.*foo/m
     end
     
-    it "does not show private methods by default" do
+    it "does show private methods by default" do
       @displayer.display @results
-      @output.should_not =~ /PRIVATE/
-      @output.should_not =~ /Class Array/
-    end
-    
-    it "shows private methods if told to" do
-      @displayer.display @results, true
       @output.should =~ /PRIVATE/
       @output.should =~ /Class Array/
+    end
+    
+    it "shows only public methods if told to" do
+      @displayer.display @results, true
+      @output.should_not =~ /PRIVATE/
+      @output.should_not =~ /Class Array/
     end
   end
 end

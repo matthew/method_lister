@@ -53,36 +53,6 @@ vary, depending on what you have loaded):
     require respond_to? send singleton_methods taint tainted? to_a to_s type
     untaint which
 
-    ========== Module PP::ObjectMixin ==========
-    PUBLIC: pretty_print pretty_print_cycle pretty_print_inspect
-    pretty_print_instance_variables
-
-    ========== Module Enumerable ==========
-    PUBLIC: all? any? collect detect each_with_index entries find find_all
-    grep include? inject map max member? min partition reject select sort
-    sort_by to_a zip
-
-    ========== Class Array ==========
-    PUBLIC: & * + - << <=> == [] []= assoc at clear collect collect! compact
-    compact! concat delete delete_at delete_if each each_index empty? eql?
-    fetch fill first flatten flatten! frozen? hash include? index indexes
-    indices insert inspect join last length map map! nitems pack pop
-    pretty_print pretty_print_cycle push rassoc reject reject! replace reverse
-    reverse! reverse_each rindex select shift size slice slice! sort sort!
-    to_a to_ary to_s transpose uniq uniq! unshift values_at zip |
-
-You can show protected and private methods too by passing in "true":
-
-    >> [].ls true
-    ========== Module Kernel ==========
-    PUBLIC: == === =~ __id__ __send__ class clone display dup eql? equal?
-    extend freeze frozen? gem grep hash id inspect instance_eval instance_of?
-    instance_variable_defined? instance_variable_get instance_variable_set
-    instance_variables is_a? kind_of? ls method methods mgrep mls mwhich nil?
-    object_id pretty_inspect private_methods protected_methods public_methods
-    require respond_to? send singleton_methods taint tainted? to_a to_s type
-    untaint which
-
     PRIVATE: Array Float Integer String URI ` abort at_exit autoload autoload?
     binding block_given? callcc caller catch chomp chomp! chop chop! eval exec
     exit exit! fail fork format gem_original_require getc gets
@@ -115,7 +85,37 @@ You can show protected and private methods too by passing in "true":
     to_a to_ary to_s transpose uniq uniq! unshift values_at zip |
 
     PRIVATE: initialize initialize_copy
-    
+
+You can show only the public methods by passing in "true":
+
+    >> [].ls true
+    ========== Module Kernel ==========
+    PUBLIC: == === =~ __id__ __send__ class clone display dup eql? equal?
+    extend freeze frozen? gem grep hash id inspect instance_eval instance_of?
+    instance_variable_defined? instance_variable_get instance_variable_set
+    instance_variables is_a? kind_of? ls method methods mgrep mls mwhich nil?
+    object_id pretty_inspect private_methods protected_methods public_methods
+    require respond_to? send singleton_methods taint tainted? to_a to_s type
+    untaint which
+
+    ========== Module PP::ObjectMixin ==========
+    PUBLIC: pretty_print pretty_print_cycle pretty_print_inspect
+    pretty_print_instance_variables
+
+    ========== Module Enumerable ==========
+    PUBLIC: all? any? collect detect each_with_index entries find find_all
+    grep include? inject map max member? min partition reject select sort
+    sort_by to_a zip
+
+    ========== Class Array ==========
+    PUBLIC: & * + - << <=> == [] []= assoc at clear collect collect! compact
+    compact! concat delete delete_at delete_if each each_index empty? eql?
+    fetch fill first flatten flatten! frozen? hash include? index indexes
+    indices insert inspect join last length map map! nitems pack pop
+    pretty_print pretty_print_cycle push rassoc reject reject! replace reverse
+    reverse! reverse_each rindex select shift size slice slice! sort sort!
+    to_a to_ary to_s transpose uniq uniq! unshift values_at zip |
+
 `grep` or `mgrep`
 -----------------
 
@@ -127,19 +127,6 @@ objects `grep` is already taken:
     ========== Module Kernel ==========
     PUBLIC: freeze frozen? instance_of? instance_variable_defined? kind_of?
 
-    ========== Module Enumerable ==========
-    PUBLIC: find find_all
-
-    ========== Class Array ==========
-    PUBLIC: delete_if fetch fill first flatten flatten! frozen? shift unshift
-
-Similar to `ls` you can pass in an extra argument of "true" to see protected
-and private methods:
-
-    >> [].mgrep /f/, true
-    ========== Module Kernel ==========
-    PUBLIC: freeze frozen? instance_of? instance_variable_defined? kind_of?
-
     PRIVATE: fail fork format method_missing printf set_trace_func
     singleton_method_undefined sprintf
 
@@ -148,7 +135,20 @@ and private methods:
 
     ========== Class Array ==========
     PUBLIC: delete_if fetch fill first flatten flatten! frozen? shift unshift
-    
+
+Similar to `ls` you can pass in an extra argument of "true" to see only the
+public methods:
+
+    >> [].mgrep /f/, true
+    ========== Module Kernel ==========
+    PUBLIC: freeze frozen? instance_of? instance_variable_defined? kind_of?
+
+    ========== Module Enumerable ==========
+    PUBLIC: find find_all
+
+    ========== Class Array ==========
+    PUBLIC: delete_if fetch fill first flatten flatten! frozen? shift unshift
+
 Note that `method_missing` is always considered a match, since it could always
 potentially execute.
 
@@ -170,12 +170,12 @@ method you're seeking. You can pass the method name in as a string or symbol.
 
 Logically the `which` command is the same as `grep(/^your_method$/)` and so
 the same comments apply about `method_missing` and the optional parameter to
-see protected/private methods.
+see only public methods.
 
 License
 =======
 
-Copyright 2008, Matthew O'Connor All rights reserved.
+Copyright 2008, 2009, Matthew O'Connor All rights reserved.
 
 This program is free software; you can redistribute it and/or modify it under
 the same terms as Ruby 1.8.7 itself.
